@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продажа телефонов — добавить своё объявление</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f4f8;
+            color: #1e1e2a;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* header */
+        header {
+            background: white;
+            border-radius: 32px;
+            padding: 20px 28px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(145deg, #1a1a2e, #4a4e6b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i { color: #3d405b; }
+        .header-count {
+            background: #eae8f0;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #2b2d42;
+        }
+
+        /* форма добавления */
+        .add-section {
+            background: white;
+            border-radius: 32px;
+            padding: 30px 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        .add-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .add-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px 24px;
+        }
+        .add-form .full-width { grid-column: 1 / -1; }
+        .add-form label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #5b5d74;
+            margin-bottom: 5px;
+        }
+        .add-form input, .add-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d6d3e0;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background: #faf9fc;
+            transition: 0.2s;
+        }
+        .add-form input:focus, .add-form textarea:focus {
+            outline: none;
+            border-color: #4a4e6b;
+            background: white;
+        }
+        .add-form textarea { resize: vertical; min-height: 70px; }
+        .add-form .btn-add {
+            background: #1e1e2a;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.25s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            grid-column: 1 / -1;
+            width: fit-content;
+            min-width: 200px;
+        }
+        .add-form .btn-add:hover {
+            background: #3d405b;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(30,30,42,0.1);
+        }
+
+        /* сетка объявлений */
+        .listings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .listings-header h2 { font-size: 1.8rem; }
+        .listings-header span { color: #5b5d74; font-weight: 500; }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+            margin-bottom: 30px;
+        }
+        .listing-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 18px 22px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+            border: 1px solid #f0eef5;
+            transition: 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+        .listing-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(30,30,42,0.06);
+        }
+        .listing-image {
+            height: 180px;
+            background: #eae8f0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #4a4e6b;
+            margin-bottom: 14px;
+            overflow: hidden;
+            background-color: #eae8f0;
+            background-size: cover;
+            background-position: center;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="200" height="160"><rect width="200" height="160" fill="%23eae8f0" rx="20"/><rect x="60" y="40" width="80" height="100" rx="12" fill="%23c5c1d4" opacity="0.5"/><circle cx="100" cy="75" r="20" fill="%23b5b0c7" opacity="0.4"/><rect x="80" y="110" width="40" height="6" rx="3" fill="%239a95b3" opacity="0.3"/></svg>');
+        }
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+        .listing-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .listing-card .model {
+            color: #4a4e6b;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+        .listing-card .desc {
+            color: #5b5d74;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            flex: 1;
+        }
+        .listing-card .price {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: #1e1e2a;
+            margin-bottom: 6px;
+        }
+        .listing-card .contacts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 0.9rem;
+            border-top: 1px solid #edeaf3;
+            padding-top: 12px;
+        }
+        .listing-card .contacts a {
+            color: #1e1e2a;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0eef5;
+            padding: 4px 14px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .listing-card .contacts a:hover {
+            background: #e3e0ec;
+        }
+        .listing-card .contacts .phone { color: #075e54; }
+        .listing-card .contacts .whatsapp { color: #25d366; }
+        .listing-card .delete-btn {
+            background: transparent;
+            border: none;
+            color: #a0a0b8;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: auto;
+            padding: 4px 12px;
+            border-radius: 40px;
+            transition: 0.2s;
+            border: 1px solid transparent;
+        }
+        .listing-card .delete-btn:hover {
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: #5b5d74;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+
+        @media (max-width: 700px) {
+            .add-form { grid-template-columns: 1fr; }
+            .add-form .full-width { grid-column: 1; }
+            .add-form .btn-add { width: 100%; }
+            header { flex-direction: column; align-items: stretch; text-align: center; }
+            .listings-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header>
+        <div class="logo"><i class="fas fa-mobile-alt"></i> PhoneMarket</div>
+        <div class="header-count" id="listingCount">0 объявлений</div>
+    </header>
+
+    <!-- форма добавления -->
+    <section class="add-section">
+        <h2><i class="fas fa-plus-circle"></i> Продать свой телефон</h2>
+        <form class="add-form" id="addForm">
+            <div>
+                <label><i class="fas fa-tag"></i> Модель</label>
+                <input type="text" id="model" placeholder="Напр. iPhone 15 Pro" value="iPhone 15 Pro" required>
+            </div>
+            <div>
+                <label><i class="fas fa-ruble-sign"></i> Цена (₽)</label>
+                <input type="number" id="price" placeholder="50000" value="75000" required>
+            </div>
+            <div class="full-width">
+                <label><i class="fas fa-align-left"></i> Описание</label>
+                <textarea id="description" placeholder="Состояние, комплектация, цвет...">Отличное состояние, 128GB, глубокий фиолетовый, полный комплект</textarea>
+            </div>
+            <div>
+                <label><i class="fas fa-phone"></i> Ваш номер телефона</label>
+                <input type="text" id="phone" placeholder="+7 999 123-45-67" value="+7 999 888-77-66">
+            </div>
+            <div>
+                <label><i class="fab fa-whatsapp"></i> Номер WhatsApp</label>
+                <input type="text" id="whatsapp" placeholder="+7 999 123-45-67" value="+7 999 888-77-66">
+            </div>
+            <div class="full-width">
+                <label><i class="fas fa-image"></i> Ссылка на фото (URL)</label>
+                <input type="text" id="imageUrl" placeholder="https://example.com/photo.jpg" value="https://cdn.pixabay.com/photo/2023/09/18/18/30/phone-8261595_1280.jpg">
+            </div>
+            <button type="submit" class="btn-add"><i class="fas fa-plus"></i> Добавить объявление</button>
+        </form>
+    </section>
+
+    <!-- список объявлений -->
+    <div class="listings-header">
+        <h2>📱 Объявления</h2>
+        <span id="listingsCountLabel">0 шт.</span>
+    </div>
+    <div class="listings-grid" id="listingsGrid"></div>
+</div>
+
+<script>
+    (function() {
+        let listings = [];
+
+        // загрузка из localStorage
+        function loadData() {
+            const saved = localStorage.getItem('phoneMarketListings');
+            if (saved) {
+                try { listings = JSON.parse(saved); } catch(e) { listings = []; }
+            }
+            if (!listings || listings.length === 0) {
+                // демо-объявления
+                listings = [
+                    {
+                        id: 1,
+                        model: 'iPhone 15 Pro',
+                        price: 75000,
+                        description: 'Отличное состояние, 128GB, глубокий фиолетовый, полный комплект',
+                        phone: '+7 999 888-77-66',
+                        whatsapp: '+7 999 888-77-66',
+                        imageUrl: 'https://cdn.pixabay.com/photo/2023/09/18/18/30/phone-8261595_1280.jpg'
+                    },
+                    {
+                        id: 2,
+                        model: 'Samsung Galaxy S24',
+                        price: 62000,
+                        description: 'Как новый, 256GB, графитовый, зарядка в комплекте',
+                        phone: '+7 999 123-45-67',
+                        whatsapp: '+7 999 123-45-67',
+                        imageUrl: 'https://cdn.pixabay.com/photo/2024/01/18/16/00/samsung-8517093_1280.jpg'
+                    },
+                    {
+                        id: 3,
+                        model: 'Xiaomi 14 Pro',
+                        price: 48000,
+                        description: 'Отличный бюджетный флагман, 512GB, черный',
+                        phone: '+7 999 555-33-22',
+                        whatsapp: '+7 999 555-33-22',
+                        imageUrl: 'https://cdn.pixabay.com/photo/2022/08/29/11/09/smartphone-7419120_1280.jpg'
+                    }
+                ];
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('phoneMarketListings', JSON.stringify(listings));
+        }
+
+        function generateId() {
+            return listings.length ? Math.max(...listings.map(l => l.id)) + 1 : 1;
+        }
+
+        // безопасное экранирование
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // отрисовка объявлений
+        function renderListings() {
+            const grid = document.getElementById('listingsGrid');
+            const countLabel = document.getElementById('listingsCountLabel');
+            const headerCount = document.getElementById('listingCount');
+            if (!grid) return;
+
+            if (listings.length === 0) {
+                grid.innerHTML = `<div class="empty-state"><i class="fas fa-mobile-alt"></i><br>Нет объявлений. Добавьте первое!</div>`;
+                countLabel.textContent = '0 шт.';
+                headerCount.textContent = '0 объявлений';
+                return;
+            }
+
+            let html = '';
+            listings.forEach(item => {
+                // фото
+                let imgHtml = '';
+                if (item.imageUrl && item.imageUrl.trim() !== '') {
+                    imgHtml = `<img src="${escapeHtml(item.imageUrl)}" alt="${escapeHtml(item.model)}" onerror="this.style.display='none';this.parentElement.style.backgroundImage='url(\\'data:image/svg+xml;utf8,<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 200 160\\" width=\\"200\\" height=\\"160\\"><rect width=\\"200\\" height=\\"160\\" fill=\\"%23eae8f0\\" rx=\\"20\\"/><rect x=\\"60\\" y=\\"40\\" width=\\"80\\" height=\\"100\\" rx=\\"12\\" fill=\\"%23c5c1d4\\" opacity=\\"0.5\\"/><circle cx=\\"100\\" cy=\\"75\\" r=\\"20\\" fill=\\"%23b5b0c7\\" opacity=\\"0.4\\"/><rect x=\\"80\\" y=\\"110\\" width=\\"40\\" height=\\"6\\" rx=\\"3\\" fill=\\"%239a95b3\\" opacity=\\"0.3\\"/></svg>\\')">`;
+                }
+
+                html += `
+                    <div class="listing-card" data-id="${item.id}">
+                        <div class="listing-image">${imgHtml}</div>
+                        <h3>${escapeHtml(item.model)}</h3>
+                        <div class="price">${item.price.toLocaleString()} ₽</div>
+                        <div class="desc">${escapeHtml(item.description || '')}</div>
+                        <div class="contacts">
+                            <a href="tel:${escapeHtml(item.phone)}" class="phone"><i class="fas fa-phone"></i> ${escapeHtml(item.phone)}</a>
+                            <a href="https://wa.me/${escapeHtml(item.whatsapp).replace(/[^0-9+]/g, '')}" target="_blank" class="whatsapp"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                            <button class="delete-btn" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+            countLabel.textContent = listings.length + ' шт.';
+            headerCount.textContent = listings.length + ' объявлений';
+
+            // события на удаление
+            grid.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const id = parseInt(this.dataset.id);
+                    if (confirm('Удалить объявление?')) {
+                        listings = listings.filter(item => item.id !== id);
+                        saveData();
+                        renderListings();
+                    }
+                });
+            });
+        }
+
+        // добавление нового
+        document.getElementById('addForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const model = document.getElementById('model').value.trim();
+            const price = parseFloat(document.getElementById('price').value);
+            const description = document.getElementById('description').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const imageUrl = document.getElementById('imageUrl').value.trim();
+
+            if (!model || isNaN(price) || price <= 0) {
+                alert('Пожалуйста, заполните модель и корректную цену (число > 0)');
+                return;
+            }
+            if (!phone) {
+                alert('Укажите номер телефона для связи');
+                return;
+            }
+
+            const newListing = {
+                id: generateId(),
+                model: model,
+                price: price,
+                description: description || '',
+                phone: phone,
+                whatsapp: whatsapp || phone,
+                imageUrl: imageUrl || ''
+            };
+
+            listings.push(newListing);
+            saveData();
+            renderListings();
+
+            // очистка полей (оставляем для быстрого добавления)
+            document.getElementById('model').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('whatsapp').value = '';
+            document.getElementById('imageUrl').value = '';
+            document.getElementById('model').focus();
+
+            // прокрутка к списку
+            document.querySelector('.listings-header').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // инициализация
+        loadData();
+        renderListings();
+    })();
+</script>
+</body>
+</html>
